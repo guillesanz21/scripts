@@ -1,0 +1,16 @@
+#! /usr/bin/env python3
+
+import os
+
+def main():
+    try:
+        command = f"docker rm -f $(docker ps -a -q)"
+
+        os.system(command)
+
+    except:
+        print("Error!")
+
+
+if __name__ == '__main__':
+    main()

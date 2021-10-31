@@ -1,0 +1,26 @@
+#! /usr/bin/env python3
+
+import os
+import sys
+
+def main():
+    try:
+
+        argsList = sys.argv[1:]
+        argsList = ["--ropsten --syncmode light" if x=="--testnet" else x for x in argsList]
+
+        args = ' '.join(argsList)
+
+        # path = os.getcwd()
+        path = "/home/guille/master/bcda/eth"
+
+        command = f"docker run -it -v {path}:/root -p 30303:30303 ethereum/client-go:stable {args}"
+        # command="test"
+        os.system(command)
+
+    except:
+        print("Error!")
+
+
+if __name__ == '__main__':
+    main()

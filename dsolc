@@ -6,7 +6,7 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Compiles an ethereum contract file (.sol), extracting the abi and bin files.")
+    parser = argparse.ArgumentParser(description="Compiles with a docker iamge an ethereum contract file (.sol), extracting the abi, bin and hashes files.")
 
     # -n FILENAME -o OUTPUTPATH
     parser.add_argument("-n", "-f", "--filename", help="Specifies the file to compile")
@@ -14,12 +14,6 @@ def main():
     parser.add_argument("-v", "--version", action="store_true", help="Print version information and quit")
 
     args = parser.parse_args()
-
-    print( "Name {} Output {} Version {}".format(
-        args.filename,
-        args.output,
-        args.version
-    ))
 
     try:
         if args.version:
@@ -41,9 +35,10 @@ def main():
                 print(f"Compiling {name} into ./{path}: ")
                 print(f"\t --> {name}.abi")
                 print(f"\t --> {name}.bin")
+                print(f"\t --> {name}.signatures")
 
                 absolutePath = os.getcwd()
-                command = f"docker run -v \"{absolutePath}\":/sources ethereum/solc:stable -o sources/{path} --abi --bin /sources/{name}.sol"
+                command = f"docker run -v \"{absolutePath}\":/sources ethereum/solc:stable -o sources/{path} --abi --bin --hashes /sources/{name}.sol"
 
                 # os.system(f"echo {command}")
                 os.system(command)
