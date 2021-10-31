@@ -1,0 +1,63 @@
+#! /usr/bin/env python3
+
+import os
+import sys
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Compiles an ethereum contract file (.sol), extracting the abi and bin files.")
+
+    # -n FILENAME -o OUTPUTPATH
+    parser.add_argument("-n", "-f", "--filename", help="Specifies the file to compile")
+    parser.add_argument("-o", "-p", "--output", default="compiled", help="Specifies the output path of the compiled files. By default is \"CURRENT_PATH/compiled/\"")
+    parser.add_argument("-v", "--version", action="store_true", help="Print version information and quit")
+
+    args = parser.parse_args()
+
+    print( "Name {} Output {} Version {}".format(
+        args.filename,
+        args.output,
+        args.version
+    ))
+
+    try:
+        if args.version:
+            version()
+            return
+        else:
+            if not args.filename:
+                print("The file to compile must be specified with the \"--filename\" flag")
+                print("Type \"dsolc -h\" to see how to use the script")
+                return
+            else:
+                path = args.output
+                name, extension = os.path.splitext(args.filename)
+
+                if extension != ".sol":
+                    print("Error, the file provided must have the \".sol\" extension")
+                    return
+
+                print(f"Compiling {name} into ./{path}: ")
+                print(f"\t --> {name}.abi")
+                print(f"\t --> {name}.bin")
+
+                absolutePath = os.getcwd()
+                command = f"docker run -v \"{absolutePath}\":/sources ethereum/solc:stable -o sources/{path} --abi --bin /sources/{name}.sol"
+
+                # os.system(f"echo {command}")
+                os.system(command)
+
+                print("Successfully compiled!")
+
+    except:
+        print("Error!")
+
+
+
+def version():
+    print("Current version: dsolc 0.01")
+
+
+if __name__ == '__main__':
+    main()
