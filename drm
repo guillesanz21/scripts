@@ -1,6 +1,11 @@
 #! /usr/bin/env python3
 
+"""
+Remove all docker containers that are both running and stopped.
+"""
+
 import os
+
 
 def main():
     try:
