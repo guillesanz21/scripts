@@ -1,0 +1,34 @@
+#! /usr/bin/env python3
+
+"""
+Activate and deactivate the general virtual environment.
+"""
+
+import os
+import sys
+
+venv_path = "~/.venv"
+
+
+def activate():
+    venv_activate_path = f"{venv_path}/bin/activate"
+    os.system(f"/bin/bash --rcfile {venv_activate_path}")
+
+
+def main():
+    try:
+        # If not arguments, activate the virtual environment
+        if len(sys.argv) == 1 or sys.argv[1] == "activate":
+            activate()
+        elif sys.argv[1] == "deactivate":
+            command = "deactivate"
+            os.system(command)
+        else:
+            print("Usage: pyenv [activate|deactivate]")
+
+    except:
+        print(f"Error!")
+
+
+if __name__ == '__main__':
+    main()
