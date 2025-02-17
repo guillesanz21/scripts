@@ -1,18 +1,28 @@
 #! /usr/bin/env python3
 
 """
-Activate and deactivate the general virtual environment.
+Activate the virtual environment.
 """
 
 import os
 import sys
 
-venv_path = "~/.venv"
+activate_path = "bin/activate"
+general_venv_path = "~/.venv/"
+general_activate_path = f"{general_venv_path}{activate_path}"
 
 
-def activate():
-    venv_activate_path = f"{venv_path}/bin/activate"
-    os.system(f"/bin/bash --rcfile {venv_activate_path}")
+def help():
+    print("""
+        Usage: pyenv [env_name]
+        If no arguments, then activate the general virtual environment.
+        if [env_name] is given, then activate the specific virtual environment in the current folder
+        """)
+    sys.exit(1)
+
+
+def activate(venv_path=general_venv_path):
+    os.system(f"/bin/bash --rcfile {venv_path}{activate_path}")
 
 
 def main():
@@ -20,12 +30,12 @@ def main():
         # If not arguments, activate the virtual environment
         if len(sys.argv) == 1 or sys.argv[1] == "activate":
             activate()
-        elif sys.argv[1] == "deactivate":
-            command = "deactivate"
-            os.system(command)
+        elif sys.argv[1] == "help" or sys.argv[1] == "-h" or sys.argv[1] == "--help":
+            help()
         else:
-            print("Usage: pyenv [activate|deactivate]")
-
+            # If arguments are given, activate the specific virtual environment
+            env_name = sys.argv[1]
+            activate(f"./{env_name}")
     except:
         print(f"Error!")
 
