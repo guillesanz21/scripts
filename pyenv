@@ -4,12 +4,15 @@
 Activate the virtual environment.
 """
 
+from pathlib import Path
 import os
+import subprocess
 import sys
 
 activate_path = "bin/activate"
-general_venv_path = "~/.venv/"
-general_activate_path = f"{general_venv_path}{activate_path}"
+home = str(Path.home())
+general_venv_path = os.path.join(home, ".venv")
+general_activate_path = os.path.join(general_venv_path, activate_path)
 
 
 def help():
@@ -22,7 +25,14 @@ def help():
 
 
 def activate(venv_path=general_venv_path):
-    os.system(f"/bin/bash --rcfile {venv_path}{activate_path}")
+    activate_script = os.path.join(venv_path, activate_path)
+
+    if not os.path.exists(activate_script):
+        print(f"Error: No activation script was found in {activate_script}")
+        return
+
+    # Ejecutar un shell interactivo con el entorno activado
+    subprocess.run(f"bash --rcfile <(echo 'source {activate_script}')", shell=True, executable="/bin/bash")
 
 
 def main():
