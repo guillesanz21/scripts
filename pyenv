@@ -46,8 +46,8 @@ def main():
             # If arguments are given, activate the specific virtual environment
             env_name = sys.argv[1]
             activate(f"./{env_name}")
-    except:
-        print(f"Error!")
+    except Exception:
+        print("Error!")
 
 
 if __name__ == '__main__':
